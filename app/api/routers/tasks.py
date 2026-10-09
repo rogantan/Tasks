@@ -1,7 +1,7 @@
 from fastapi import APIRouter
-from schemas.tasks import TaskCreate,TaskRead, TaskUpdate
+from app.schemas.tasks import TaskCreate,TaskRead, TaskUpdate
 
-router = APIRouter(prefix="/tasks")
+router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
 @router.get("")
 async def get_tasks():
