@@ -7,6 +7,10 @@ class Settings(BaseSettings):
   POSTGRES_PASSWORD: str
   POSTGRES_DB: str
 
+  REDIS_PASSWORD: str
+  REDIS_USER: str
+  REDIS_USER_PASSWORD: str
+
   @property
   def get_db_url(self):
     return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"

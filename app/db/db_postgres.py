@@ -1,11 +1,11 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
-from db.base import Base
-from core.config import settings
+from app.db.base import Base
+from app.core.config import settings
 from fastapi import Depends
 from typing import Annotated
 
-DATABASE_URL = str(settings.database_url)
+DATABASE_URL = str(settings.get_db_url)
 
 engine = create_async_engine(DATABASE_URL, echo=True)
 async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
