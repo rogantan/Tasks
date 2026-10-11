@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, insert, update, delete
+from typing import Dict
 
 class AbstractRepository:
   def __init__(self, model, session: AsyncSession):
@@ -16,16 +17,17 @@ class AbstractRepository:
     result = await self.session.execute(query)
     return result.scalars().one_or_none()
 
-  async def insert(self, **data):
+  async def insert(self, **data: Dict):
     query = insert(self.model).values(**data)
     result = await self.session.execute(query.returning(self.model))
     return result.scalars().one()
 
-  async def update(self, model_id: int | str, **data):
+  async def update(self, model_id: int | str, **data: Dict):
     query = update(self.model).where(self.model.id == model_id).values(**data)
     result = await self.session.execute(query.returning(self.model))
-    return result.scalars().one()
+    await self.session.commit()
+    return result.scalar_one_or_none()
 
   async def delete(self, model_id: int | str):
-    obj = self.get_by_id(self.session, model_id)
+    obj = await self.get_by_id(model_id)
     await self.session.delete(obj)

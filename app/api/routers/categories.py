@@ -6,6 +6,10 @@ router = APIRouter(prefix="/categories", tags=["Categories"])
 async def get_categories():
   pass
 
+@router.get("/{category_id}")
+async def get_category():
+  pass
+
 @router.post("")
 async def create_category():
   pass

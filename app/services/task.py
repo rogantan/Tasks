@@ -21,13 +21,18 @@ class TaskService:
     data = payload.model_dump()
     task_new = await self.repository.insert(**data)
     await self.session.commit()
-    return task_new
+    return TaskRead.model_validate(task_new)
 
   async def update_task(self, task_id: int, payload: TaskUpdate):
-    data = payload.model_dump()
+    data = {}
+    if payload.title is not None:
+      data["title"] = payload.title
+    if payload.completed is not None:
+      data["completed"] = payload.completed
     task_updated = await self.repository.update(task_id, **data)
     await self.session.commit()
-    return task_updated
+    if task_updated:
+      return TaskRead.model_validate(task_updated)
 
   async def delete_task(self, task_id: int):
     await self.repository.delete(task_id)
