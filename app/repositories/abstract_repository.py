@@ -30,4 +30,5 @@ class AbstractRepository:
 
   async def delete(self, model_id: int | str):
     obj = await self.get_by_id(model_id)
-    await self.session.delete(obj)
+    if obj:
+      await self.session.delete(obj)

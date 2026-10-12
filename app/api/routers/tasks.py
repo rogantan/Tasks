@@ -10,8 +10,8 @@ router = APIRouter(prefix="/tasks", tags=["Tasks"])
 async def get_tasks(task_service: TaskService = Depends(get_task_service)) -> List[TaskRead]:
   return await task_service.list_tasks()
 
-@router.get("/{task_id}", response_model=TaskRead)
-async def get_task(task_id: int, task_service: TaskService = Depends(get_task_service)) -> TaskRead:
+@router.get("/{task_id}", response_model=TaskRead | None)
+async def get_task(task_id: int, task_service: TaskService = Depends(get_task_service)) -> TaskRead | None:
   return await task_service.get_task(task_id)
 
 @router.post("")
